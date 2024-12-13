@@ -8,6 +8,43 @@ def view_books():
         print(f"Title: {book['title']}, Quantity: {book['quantity']}")
 
 
+# Add a new book
+def add_book():
+    print("\n---- Add a New Book ----")
+    books = load_books()
+    book_title = input("Enter the title of the new book: ").strip()
+    quantity = input("Enter the quantity of the new book: ").strip()
+
+    # Check if the book already exists
+    if any(book["title"].lower() == book_title.lower() for book in books):
+        print("\nError: Book already exists. Use 'Update Book Quantity' to modify it.")
+        return
+
+    # Add the new book
+    books.append({"title": book_title, "quantity": quantity})
+    save_books(books)
+    print(f"\nBook '{book_title}' added successfully with a quantity of {quantity}.")
+
+
+# Update an existing book's quantity
+def update_book():
+    print("\n---- Update Book Quantity ----")
+    books = load_books()
+    book_title = input("Enter the title of the book to update: ").strip()
+    matching_book = next((book for book in books if book["title"].lower() == book_title.lower()), None)
+
+    if not matching_book:
+        print("\nError: Book not found.")
+        return
+
+    new_quantity = input("Enter the new quantity for the book: ").strip()
+
+    # Update the quantity
+    matching_book["quantity"] = new_quantity
+    save_books(books)
+    print(f"\nQuantity for book '{book_title}' updated to {new_quantity}.")
+
+
 # Lend a book
 def lend_book():
     print("\n---- Lend a Book ----")
